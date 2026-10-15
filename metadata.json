@@ -1,0 +1,6 @@
+{
+  "name": "SQL QA Master: 2000+ Interview Quiz & Live SQL Runner",
+  "description": "Master QA & SDET SQL interview questions asked at Google, Amazon, Sun King, GlobalLogic, Nagarro, and top tech giants. Features live in-browser SQL query validation, ETL data reconciliation quizzes, and Glassdoor interview simulations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
