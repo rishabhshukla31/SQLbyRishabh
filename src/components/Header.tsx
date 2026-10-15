@@ -1,9 +1,9 @@
 import React from 'react';
-import { Terminal, Award, BookOpen, Layers, Briefcase, Zap } from 'lucide-react';
+import { Terminal, Zap } from 'lucide-react';
 
 interface HeaderProps {
-  activeTab: 'questions' | 'companies' | 'lab' | 'mock' | 'cheatsheet';
-  onSelectTab: (tab: 'questions' | 'companies' | 'lab' | 'mock' | 'cheatsheet') => void;
+  activeTab: 'questions' | 'ladder' | 'companies' | 'lab' | 'mock' | 'cheatsheet';
+  onSelectTab: (tab: 'questions' | 'ladder' | 'companies' | 'lab' | 'mock' | 'cheatsheet') => void;
   onStartRandom: () => void;
   solvedCount: number;
 }
@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         {/* Zone 2: Concise single-line navigation links */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <nav className="hidden md:flex items-center gap-5 text-sm font-medium text-slate-300">
           <button
             onClick={() => onSelectTab('questions')}
             className={`whitespace-nowrap shrink-0 transition-colors py-1 ${
@@ -40,7 +40,17 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'hover:text-white'
             }`}
           >
-            Question Bank
+            All Questions (4,200)
+          </button>
+          <button
+            onClick={() => onSelectTab('ladder')}
+            className={`whitespace-nowrap shrink-0 transition-colors py-1 ${
+              activeTab === 'ladder'
+                ? 'text-cyan-400 font-semibold border-b-2 border-cyan-400'
+                : 'hover:text-white'
+            }`}
+          >
+            Skill Ladder (Easy ➔ Tough)
           </button>
           <button
             onClick={() => onSelectTab('companies')}
@@ -89,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400 font-mono tabular-nums bg-slate-900 border border-slate-800 px-2.5 py-1.5 rounded-md">
             <span className="text-emerald-400 font-semibold">{solvedCount}</span>
             <span className="text-slate-500">/</span>
-            <span>2000 Solved</span>
+            <span>4,200 Solved</span>
           </div>
 
           <button

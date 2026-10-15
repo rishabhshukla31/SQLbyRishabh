@@ -17,6 +17,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
   onSelect,
   onToggleBookmark,
 }) => {
+  let tierColor = 'text-emerald-400';
+  if (question.tier === 'Medium') tierColor = 'text-amber-400';
+  if (question.tier === 'Tough') tierColor = 'text-rose-400';
+
   return (
     <div
       onClick={() => onSelect(question)}
@@ -36,7 +40,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
             <span aria-hidden="true" className="text-slate-600">·</span>
             <span className="font-semibold text-slate-200">{question.company}</span>
             <span aria-hidden="true" className="text-slate-600">·</span>
-            <span>{question.interviewRole}</span>
+            <span className={`font-semibold font-mono ${tierColor}`}>{question.tier}</span>
             <span aria-hidden="true" className="text-slate-600">·</span>
             <span className="text-slate-300">{question.difficulty}</span>
           </div>
@@ -83,7 +87,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({
         </div>
 
         <div className="flex items-center gap-1 text-xs font-medium text-cyan-400 group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all">
-          <span>{question.type === 'interactive_sql' ? 'Open SQL Lab' : 'Take Quiz'}</span>
+          <span>{question.type === 'interactive_sql' ? 'Write SQL' : 'Take Quiz'}</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </div>
       </div>

@@ -1,11 +1,13 @@
 import React from 'react';
-import { CompanyName, DifficultyLevel, QACategory, QuestionType } from '../types/question';
+import { CompanyName, DifficultyLevel, QACategory, QuestionType, SkillTier } from '../types/question';
 import { QA_CATEGORIES, DIFFICULTY_LEVELS } from '../data/questionBank';
 import { Search, X, SlidersHorizontal } from 'lucide-react';
 
 interface FilterBarProps {
   searchTerm: string;
   onSearchChange: (val: string) => void;
+  selectedTier: SkillTier | 'All';
+  onTierChange: (tier: SkillTier | 'All') => void;
   selectedCompany: CompanyName | 'All';
   onCompanyChange: (c: CompanyName | 'All') => void;
   selectedCategory: QACategory | 'All';
@@ -24,6 +26,8 @@ interface FilterBarProps {
 export const FilterBar: React.FC<FilterBarProps> = ({
   searchTerm,
   onSearchChange,
+  selectedTier,
+  onTierChange,
   selectedCompany,
   onCompanyChange,
   selectedCategory,
@@ -40,6 +44,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 }) => {
   const hasActiveFilters =
     searchTerm.trim() !== '' ||
+    selectedTier !== 'All' ||
     selectedCompany !== 'All' ||
     selectedCategory !== 'All' ||
     selectedDifficulty !== 'All' ||
@@ -57,7 +62,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             type="text"
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search 2,000+ QA SQL questions by keyword, #ID, or tag..."
+            placeholder="Search 4,200+ QA SQL questions by keyword, #ID, or tag..."
             className="w-full pl-9 pr-8 py-2 text-xs bg-slate-950 border border-slate-700/80 rounded-lg text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-cyan-400"
           />
           {searchTerm && (
@@ -116,7 +121,22 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       </div>
 
       {/* Dropdown Filters row */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-xs">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-1 text-xs">
+        {/* Tier Level Filter */}
+        <div className="flex flex-col gap-1">
+          <label className="text-[11px] text-slate-400">Skill Tier:</label>
+          <select
+            value={selectedTier}
+            onChange={(e) => onTierChange(e.target.value as any)}
+            className="w-full bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-cyan-400 font-medium"
+          >
+            <option value="All">All Tiers (Easy to Tough)</option>
+            <option value="Basic">Basic (Easy) ~1,400 Qs</option>
+            <option value="Medium">Medium ~1,400 Qs</option>
+            <option value="Tough">Tough (Hard) ~1,400 Qs</option>
+          </select>
+        </div>
+
         {/* Company Filter */}
         <div className="flex flex-col gap-1">
           <label className="text-[11px] text-slate-400">Company Track:</label>
@@ -159,7 +179,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             onChange={(e) => onDifficultyChange(e.target.value as any)}
             className="w-full bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-cyan-400"
           >
-            <option value="All">All Levels</option>
+            <option value="All">All Roles</option>
             {DIFFICULTY_LEVELS.map((d) => (
               <option key={d} value={d}>
                 {d}
@@ -177,7 +197,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             className="w-full bg-slate-950 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-cyan-400"
           >
             <option value="All">All Formats</option>
-            <option value="interactive_sql">Live SQL Lab Runner</option>
+            <option value="interactive_sql">Write SQL Code</option>
             <option value="multiple_choice">Scenario Quiz (MCQ)</option>
           </select>
         </div>

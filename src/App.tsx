@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { CompanyName, DifficultyLevel, QACategory, Question, QuestionType } from './types/question';
+import { CompanyName, DifficultyLevel, QACategory, Question, QuestionType, SkillTier } from './types/question';
 import { QUESTION_BANK, COMPANY_PROFILES } from './data/questionBank';
 import { Header } from './components/Header';
 import { StatsBanner } from './components/StatsBanner';
@@ -8,13 +8,14 @@ import { QuestionCard } from './components/QuestionCard';
 import { QuestionDetailModal } from './components/QuestionDetailModal';
 import { CompanyTrackView } from './components/CompanyTrackView';
 import { LiveSqlLabView } from './components/LiveSqlLabView';
+import { LevelLadderView } from './components/LevelLadderView';
 import { MockInterviewModal } from './components/MockInterviewModal';
 import { CheatSheetModal } from './components/CheatSheetModal';
 import { ChevronLeft, ChevronRight, Sparkles, Building2, Terminal, BookOpen, Layers } from 'lucide-react';
 
 export default function App() {
   // Navigation & views
-  const [activeTab, setActiveTab] = useState<'questions' | 'companies' | 'lab' | 'mock' | 'cheatsheet'>('questions');
+  const [activeTab, setActiveTab] = useState<'questions' | 'ladder' | 'companies' | 'lab' | 'mock' | 'cheatsheet'>('questions');
   const [activeQuestion, setActiveQuestion] = useState<Question | null>(null);
   const [showMockModal, setShowMockModal] = useState(false);
   const [mockCompany, setMockCompany] = useState<CompanyName | 'All'>('All');
@@ -58,6 +59,7 @@ export default function App() {
 
   // Filters state
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTier, setSelectedTier] = useState<SkillTier | 'All'>('All');
   const [selectedCompany, setSelectedCompany] = useState<CompanyName | 'All'>('All');
   const [selectedCategory, setSelectedCategory] = useState<QACategory | 'All'>('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel | 'All'>('All');
@@ -71,6 +73,9 @@ export default function App() {
   // Filter computation
   const filteredQuestions = useMemo(() => {
     return QUESTION_BANK.filter((q) => {
+      // Tier filter
+      if (selectedTier !== 'All' && q.tier !== selectedTier) return false;
+
       // Company filter
       if (selectedCompany !== 'All' && q.company !== selectedCompany) return false;
 
@@ -108,6 +113,7 @@ export default function App() {
       return true;
     });
   }, [
+    selectedTier,
     selectedCompany,
     selectedCategory,
     selectedDifficulty,
@@ -123,6 +129,7 @@ export default function App() {
     setCurrentPage(1);
   }, [
     searchTerm,
+    selectedTier,
     selectedCompany,
     selectedCategory,
     selectedDifficulty,
@@ -154,6 +161,7 @@ export default function App() {
 
   const handleResetFilters = () => {
     setSearchTerm('');
+    setSelectedTier('All');
     setSelectedCompany('All');
     setSelectedCategory('All');
     setSelectedDifficulty('All');
@@ -221,6 +229,17 @@ export default function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 pb-16">
+        {/* Skill Ladder (Easy ➔ Tough) Tab */}
+        {activeTab === 'ladder' && (
+          <LevelLadderView
+            questions={QUESTION_BANK}
+            solvedIds={solvedIds}
+            bookmarkedIds={bookmarkedIds}
+            onSelectQuestion={setActiveQuestion}
+            onToggleBookmark={handleToggleBookmark}
+          />
+        )}
+
         {/* Company Tracks Tab */}
         {activeTab === 'companies' && (
           <CompanyTrackView
@@ -249,6 +268,8 @@ export default function App() {
             <FilterBar
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
+              selectedTier={selectedTier}
+              onTierChange={setSelectedTier}
               selectedCompany={selectedCompany}
               onCompanyChange={setSelectedCompany}
               selectedCategory={selectedCategory}
@@ -268,7 +289,7 @@ export default function App() {
             {paginatedQuestions.length === 0 ? (
               <div className="text-center py-16 px-4 rounded-2xl border border-slate-800 bg-slate-900/40">
                 <p className="text-base font-semibold text-slate-300">No questions match your current filters</p>
-                <p className="text-xs text-slate-500 mt-1">Try relaxing your search terms or company selection</p>
+                <p className="text-xs text-slate-500 mt-1">Try relaxing your search terms or tier selection</p>
                 <button
                   onClick={handleResetFilters}
                   className="mt-4 px-4 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors"
@@ -353,12 +374,14 @@ export default function App() {
           <div className="flex items-center gap-2">
             <span className="font-semibold text-slate-400">SQL QA Master</span>
             <span>·</span>
-            <span>2,000+ QA & SDET Interview Questions</span>
+            <span>4,200 QA & SDET Interview Questions</span>
             <span>·</span>
-            <span>Real Glassdoor QA Benchmarks</span>
+            <span>Basic · Medium · Tough Skill Ladder</span>
+            <span>·</span>
+            <span>Glassdoor QA Benchmarks</span>
           </div>
           <div>
-            Built for QA Engineers, SDETs, and Data Test Leads preparing for FAANG & Tech Giant Interviews.
+            Master ETL reconciliation, duplicate detection, window functions, and ledger integrity.
           </div>
         </div>
       </footer>

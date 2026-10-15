@@ -27,6 +27,8 @@ export type QACategory =
 
 export type DifficultyLevel = 'Junior QA' | 'Mid SDET' | 'Senior QA Lead' | 'Principal Data QA';
 
+export type SkillTier = 'Basic' | 'Medium' | 'Tough';
+
 export type QuestionType = 'interactive_sql' | 'multiple_choice';
 
 export interface TableSchema {
@@ -43,6 +45,7 @@ export interface Question {
   companyCategory: CompanyCategory;
   interviewRole: 'SDET' | 'QA Engineer' | 'Data QA Analyst' | 'Automation Test Lead' | 'ETL Tester';
   difficulty: DifficultyLevel;
+  tier?: SkillTier;
   category: QACategory;
   type: QuestionType;
   glassdoorContext: string;
@@ -59,6 +62,7 @@ export interface Question {
   qaInsight: string;
 
   // For multiple choice
+  whyCorrect?: string;
   options?: {
     id: string;
     text: string;

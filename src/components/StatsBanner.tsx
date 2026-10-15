@@ -1,5 +1,5 @@
 import React from 'react';
-import { Database, Building2, CheckCircle2, Flame, Award, Terminal } from 'lucide-react';
+import { Database, Building2, CheckCircle2, TrendingUp, Terminal } from 'lucide-react';
 
 interface StatsBannerProps {
   totalQuestions: number;
@@ -33,6 +33,19 @@ export const StatsBanner: React.FC<StatsBannerProps> = ({
         </div>
       </div>
 
+      {/* 3 Skill Tiers */}
+      <div className="flex items-center gap-3.5 p-4 rounded-xl border border-slate-800 bg-slate-900/50">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <TrendingUp className="h-5 w-5" />
+        </div>
+        <div>
+          <div className="text-sm font-bold text-white font-mono tabular-nums">
+            1.4k <span className="text-slate-500">·</span> 1.4k <span className="text-slate-500">·</span> 1.4k
+          </div>
+          <div className="text-xs text-slate-400">Basic · Medium · Tough</div>
+        </div>
+      </div>
+
       {/* Target Companies */}
       <div className="flex items-center gap-3.5 p-4 rounded-xl border border-slate-800 bg-slate-900/50">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20">
@@ -46,9 +59,9 @@ export const StatsBanner: React.FC<StatsBannerProps> = ({
         </div>
       </div>
 
-      {/* Solved & Accuracy */}
+      {/* Solved & Format */}
       <div className="flex items-center gap-3.5 p-4 rounded-xl border border-slate-800 bg-slate-900/50">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
           <CheckCircle2 className="h-5 w-5" />
         </div>
         <div>
@@ -56,20 +69,9 @@ export const StatsBanner: React.FC<StatsBannerProps> = ({
             {solvedCount}{' '}
             <span className="text-xs text-slate-500 font-normal">({progressPct}%)</span>
           </div>
-          <div className="text-xs text-slate-400">Questions Mastered</div>
-        </div>
-      </div>
-
-      {/* Interactive SQL Lab mode */}
-      <div className="flex items-center gap-3.5 p-4 rounded-xl border border-slate-800 bg-slate-900/50">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-          <Terminal className="h-5 w-5" />
-        </div>
-        <div>
-          <div className="text-xl font-extrabold text-white font-mono tabular-nums">
-            {interactiveCount} / {mcqCount}
+          <div className="text-xs text-slate-400">
+            {interactiveCount} SQL / {mcqCount} Quizzes
           </div>
-          <div className="text-xs text-slate-400">SQL Lab / Quizzes</div>
         </div>
       </div>
     </div>
